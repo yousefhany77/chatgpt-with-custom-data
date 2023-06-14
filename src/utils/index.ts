@@ -1,7 +1,7 @@
 // import { PineconeClient } from '@pinecone-database/pinecone';
 import { PineconeClient } from '@pinecone-database/pinecone';
 import { VectorOperationsApi } from '@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch';
-import { PromptTemplate } from 'langchain';
+import { PromptTemplate } from 'langchain/prompts';
 import { ConversationalRetrievalQAChain } from 'langchain/chains';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { Document } from 'langchain/document';
@@ -11,7 +11,6 @@ import { OpenAIEmbeddings } from 'langchain/embeddings/openai';
 import { BufferMemory } from 'langchain/memory';
 import { RecursiveCharacterTextSplitter } from 'langchain/text_splitter';
 import { PineconeStore } from 'langchain/vectorstores/pinecone';
-
 const INDEX_NAME = 'blog-index';
 
 interface Metadata {

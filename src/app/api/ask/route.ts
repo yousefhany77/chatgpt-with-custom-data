@@ -50,12 +50,10 @@ export async function POST(request: Request) {
     );
   }
   try {
-    // const answer = await askAIWithCache(question);
+    const answer = await askAIWithCache(question);
     revalidateTag('tokens');
     revalidatePath('/');
-    return NextResponse.json({
-      answer: 'answer',
-    });
+    return NextResponse.json(answer);
   } catch (error) {
     console.log('🚀 ~ file: route.ts:30 ~ GET ~ error:', error);
   }
