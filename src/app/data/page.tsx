@@ -1,6 +1,6 @@
+import { Markdown } from '@/components/Markdown';
 import { DirectoryLoader } from 'langchain/document_loaders/fs/directory';
 import { TextLoader } from 'langchain/document_loaders/fs/text';
-import { Markdown } from './Markdown';
 
 const page = async () => {
   const loader = new DirectoryLoader('src/blogs', {
@@ -18,7 +18,6 @@ const page = async () => {
           <>
             <br />
             <hr />
-
             <br />
             <article key={i}>
               <Markdown md={doc.pageContent} />

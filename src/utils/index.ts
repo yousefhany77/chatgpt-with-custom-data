@@ -1,6 +1,7 @@
 // import { PineconeClient } from '@pinecone-database/pinecone';
 import { PineconeClient } from '@pinecone-database/pinecone';
 import { VectorOperationsApi } from '@pinecone-database/pinecone/dist/pinecone-generated-ts-fetch';
+import { PromptTemplate } from 'langchain';
 import { ConversationalRetrievalQAChain } from 'langchain/chains';
 import { ChatOpenAI } from 'langchain/chat_models/openai';
 import { Document } from 'langchain/document';
@@ -125,6 +126,11 @@ export const askAI = async (question: string, client: PineconeClient) => {
     temperature: 0,
     cache: true,
   });
+  const qa_template = `Use the following pieces of context to answer the question at the end. If you don't know the answer, just say "Sorry I dont know, don't try to make up an answer.
+  {context}
+
+  Question: {question}
+  Helpful Answer In markdown format. If the answer consists of multiple parts add relevant title to each section the title should size be only like h6 or h5:`;
   const chain = ConversationalRetrievalQAChain.fromLLM(llm, vectorStore.asRetriever(), {
     returnSourceDocuments: true,
     memory: new BufferMemory({
@@ -134,13 +140,16 @@ export const askAI = async (question: string, client: PineconeClient) => {
       returnMessages: true, // If using with a chat model
     }),
     verbose: true,
+    qaChainOptions: {
+      type: 'stuff',
+      prompt: PromptTemplate.fromTemplate(qa_template),
+    },
   });
 
   const answer = (await chain.call({
     question: sanitizedQuestion,
   })) as Answer;
-  return answer 
-  
+  return answer;
 };
 
 export interface Answer {

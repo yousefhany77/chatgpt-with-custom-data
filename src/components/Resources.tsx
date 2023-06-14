@@ -9,19 +9,22 @@ const Resources = ({ source: { pageContent, metadata } }: { source: Answer['sour
     setIsExpanded(!isExpanded);
   };
   const titleEndIndex = pageContent.indexOf('\n');
-  const title = pageContent.substring(0, titleEndIndex).replace(/### /g, '');
-  const path = metadata.source.split('/');
+  const title = pageContent.substring(0, titleEndIndex).replaceAll(/#/g, '')
+  const path = metadata.source
+    .split('/')
+    .slice(metadata.source.split('/').length - 3)
+    .join('/');
   const pageContentText = pageContent.substring(titleEndIndex + 1);
 
   return (
     <div
-      className={`border border-slate-400 ${
+      className={`border border-slate-400  ${
         isExpanded ? 'bg-slate-400 text-white' : ''
       } my-2  transition-colors ease-in-out duration-500 rounded-lg overflow-hidden`}
     >
       <div className="flex flex-col justify-between cursor-pointer p-3 flex-wrap" onClick={toggleCollapse}>
         <h3 className=" flex items-center justify-between text-lg font-semibold w-full p-3">
-          {title}
+          {title.length ? title :`From: ${ path}`}
           <span
             className={`text-2xl font-bold
         ${isExpanded ? 'transform rotate-180' : 'transform rotate-0'}
@@ -44,7 +47,7 @@ const Resources = ({ source: { pageContent, metadata } }: { source: Answer['sour
             {pageContentText}
             <br />
             <br />
-            <span className={`text-sm font-normal text-gray-400`}>{path.slice(path.length - 3).join('/')}</span>
+            <span className={`text-sm font-normal text-gray-400`}>{path}</span>
             <br />
             <i className="text-sm font-normal text-gray-400">
               {/* @ts-ignore */}
