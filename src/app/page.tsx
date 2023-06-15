@@ -1,5 +1,4 @@
 import Chat from '@/components/Chat';
-import Time from '@/components/Time';
 
 export default function Home() {
   return (
