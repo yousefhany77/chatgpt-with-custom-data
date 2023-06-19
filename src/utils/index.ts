@@ -89,31 +89,7 @@ const createAndSaveEmbeddings = async (docs: Document<Metadata>[][], index: Vect
   return;
 };
 
-// working version
-// export const askAI = async (question: string, client: PineconeClient) => {
-//   const pineconeIndex = client.Index(INDEX_NAME);
-//   const vectorStore = await PineconeStore.fromExistingIndex(new OpenAIEmbeddings(), { pineconeIndex });
-//   // OpenAI recommends replacing newlines with spaces for best results
-//   const sanitizedQuestion = question.trim().replaceAll('\n', ' ');
-//   const context = (await vectorStore.similaritySearch(sanitizedQuestion, 3)) as unknown as { metadata: Metadata }[];
-//   const docs = context.map(
-//     ({ metadata: { pageContent, source } }) => new Document({ pageContent, metadata: { source } })
-//   );
 
-//   const llm = new OpenAI({ temperature: 0 });
-//   const chain = loadQAStuffChain(llm, {
-//     prompt: QA_PROMPT,
-//   });
-//   const { text } = await chain.call({
-//     question: sanitizedQuestion,
-//     input_documents: docs,
-//   });
-//   return {
-//     answer: text,
-//     docs,
-//   };
-//   return docs;
-// };
 export const askAI = async (question: string, client: PineconeClient) => {
   const pineconeIndex = client.Index(INDEX_NAME);
   const vectorStore = await PineconeStore.fromExistingIndex(new OpenAIEmbeddings(), { pineconeIndex });
